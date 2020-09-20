@@ -10,15 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200920175311) do
+ActiveRecord::Schema.define(version: 20200920203820) do
 
   create_table "messages", force: :cascade do |t|
     t.string   "status"
     t.string   "message_id"
     t.string   "content"
     t.string   "to_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "provider_name"
     t.index ["message_id"], name: "index_messages_on_message_id"
     t.index ["status"], name: "index_messages_on_status"
   end
