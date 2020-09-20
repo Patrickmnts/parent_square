@@ -1,0 +1,3 @@
+class SmsProvider < ApplicationRecord
+
+end
