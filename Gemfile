@@ -36,7 +36,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0.1'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '~> 1.3.13'
-  gem 'dotenv-rails', '2.7.6'
 end
 
 group :development do
