@@ -8,4 +8,8 @@ class Message < ApplicationRecord
   def should_retry?
     status == STATUS_FAILED
   end
+
+  def okay_to_deliver?
+    status.nil? || should_retry?
+  end
 end
