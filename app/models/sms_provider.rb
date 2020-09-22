@@ -1,3 +1,0 @@
-class SmsProvider < ApplicationRecord
-
-end
