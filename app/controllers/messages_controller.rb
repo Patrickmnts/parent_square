@@ -10,8 +10,19 @@ class MessagesController < ApplicationController
     end
   end
 
+  def set_delivery_status
+    message = Message.find(params[:id])
+    return unless message.present?
+
+    message.update_attributes(permitted_message_callback_params)
+  end
+
   private
   def permitted_message_params
     params.permit(:to_number, :content)
+  end
+
+  def permitted_message_callback_params
+    params.permit(:status, :message_id)
   end
 end

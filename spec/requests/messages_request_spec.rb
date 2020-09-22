@@ -28,4 +28,17 @@ RSpec.describe "Messages", type: :request do
       expect(response_json).to include("To number can't be blank")
     end
   end
+
+  describe 'set_delivery_status path' do
+    let(:message) { Message.create({ to_number: '1112223333', content: 'something profound' }) }
+
+    it 'updates message status' do
+      uuid = SecureRandom.uuid
+      params = { id: message.id, status: 'delivered', message_id: uuid }
+      post set_delivery_status_path(params)
+      message.reload
+      expect(message.status).to eq('delivered')
+      expect(message.message_id).to eq(uuid)
+    end
+  end
 end

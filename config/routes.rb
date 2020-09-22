@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   resources :messages, :only => [:create],
             :defaults => { :format => 'json' }
 
+  post 'message/:id/set_delivery_status', to: 'messages#set_delivery_status', as: 'set_delivery_status'
 end
