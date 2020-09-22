@@ -14,7 +14,7 @@ RSpec.describe SmsService do
   end
 
   describe 'service methods' do
-    let(:message) { Message.new(to_number: '1112223333', content: 'hello world') }
+    let(:message) { Message.create(to_number: '1112223333', content: 'hello world') }
     let(:service) { SmsService.new(message) }
 
     describe 'select_new_provider' do
@@ -24,7 +24,7 @@ RSpec.describe SmsService do
           providers << service.send(:select_new_provider)
         end
 
-        expect(providers.count(PROVIDER_1)).to be < providers.count(PROVIDER_2)
+        expect(providers.count(PROVIDER_1)).to be <= providers.count(PROVIDER_2)
       end
     end
 
@@ -41,6 +41,32 @@ RSpec.describe SmsService do
         allow_any_instance_of(SmsService).to receive(:select_new_provider).once
         message.update_attributes(provider_name: PROVIDER_1.name)
         SmsService.new(message)
+      end
+    end
+
+    describe 'deliver_message' do
+      it 'persists message_id if successful' do
+        mock_id = SecureRandom.uuid
+        allow_any_instance_of(HTTPClient).to receive(:post) { OpenStruct.new({ status: 200, body: { message_id: mock_id }.to_json}) }
+
+        service.deliver_message
+        message.reload
+        expect(message.message_id).to eq(mock_id)
+        expect(message.status).to eq(Message::STATUS_DELIVERED)
+      end
+
+      it 'updates message status if request unsuccessful' do
+        allow_any_instance_of(HTTPClient).to receive(:post) { OpenStruct.new({ status: 500 }) }
+        service.deliver_message
+        message.reload
+        expect(message.message_id).to be_nil
+        expect(message.status).to eq(Message::STATUS_FAILED)
+      end
+    end
+
+    describe 'message_callback_url' do
+      it 'returns the url for set_delivery_status' do
+        expect(service.send(:message_callback_url, message)).to eq("http://#{Rails.application.routes.default_url_options[:host]}/message/#{message.id}/set_delivery_status")
       end
     end
   end
