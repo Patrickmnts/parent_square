@@ -4,7 +4,7 @@ class MessagesController < ApplicationController
 
     if message.save
       SmsService.call(message)
-      render json: {}, status: 200
+      render json: { }, status: 200
     else
       render json: message.errors.full_messages, status: 400
     end
