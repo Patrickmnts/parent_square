@@ -3,9 +3,10 @@
 * There shouldn't be too much out of the ordinary with the set up here.
 
 Built using Ruby 2.3.1 (reflected in .ruby-version)
-Steps to bootstrap should only require bundle install.
+Steps to bootstrap should only require bundle install & rake db:create / db:migrate.
+Specs can be run using `rspec`
 
-Built with Rails 5 because my the local dev environment on my personal computer is WAY out of date and it was not worth the fight to untangle everything.
+Built with Rails 5 because my the local dev environment on my personal computer is a bit out of date and it was not worth the fight to untangle everything.
 
 To exercise application via the Rails console
 ```
